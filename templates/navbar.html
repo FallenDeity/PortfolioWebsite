@@ -1,0 +1,41 @@
+<nav>
+    <div class="topnav" id="Navbar">
+        <button class="left" href="/" style="font-size: 36px;font-weight: bold;margin-left: 10px;">
+            <img alt="Home" src="static/assets/home.png" style="width: 48px; height: 48px">
+            Home
+        </button>
+        <a class="icon" href="javascript:void(0);" id="menu" onclick="topNav()" style="margin-right: 20px">
+            <i aria-hidden="true" class="fa fa-bars"></i>
+            <div class="dropdown" id="mobile-menu">
+                <i aria-hidden="true" class="fa fa-times"
+                   style="float: right;font-size: 18px;display: block;margin-bottom: 5px; padding-right: 0"></i>
+                <a href="/blog"><i aria-hidden="true" class="fa-solid fa-blog"></i>Blog</a>
+                <a href="/profile"><i aria-hidden="true" class="fa-solid fa-user-secret rounded"></i>Profile</a>
+                <a href="/projects"><i aria-hidden="true" class="fa-solid fa-microchip"></i>Projects</a>
+                <a href="/achievements"><i aria-hidden="true" class="fa-solid fa-trophy"></i>Achievements</a>
+                <a href="/source"><i aria-hidden="true" class="fa-brands fa-github-alt rounded"></i>Source Code</a>
+            </div>
+        </a>
+        <button class="right rounded_button" href="/profile" onclick="location.href='/profile'"
+                style="margin-top: 20px">
+            <i aria-hidden="true" class="fa-solid fa-user-secret rounded"></i>
+            Profile
+        </button>
+        <button class="right rounded_button" href="/source" onclick="location.href='/source'" style="margin-top: 20px">
+            <i aria-hidden="true" class="fa-brands fa-github-alt rounded"></i>
+            Source Code
+        </button>
+        <button class="right" href="/achievements" onclick="location.href='/achievements'" style="margin-right: 50px">
+            <i aria-hidden="true" class="fa-solid fa-trophy"></i>
+            Achievements
+        </button>
+        <button class="right" href="/projects" onclick="location.href= '/projects'">
+            <i aria-hidden="true" class="fa-solid fa-microchip"></i>
+            Projects
+        </button>
+        <button class="right" href="/blog" onclick="location.href= '/blog'">
+            <i aria-hidden="true" class="fa-solid fa-blog"></i>
+            Blog
+        </button>
+    </div>
+</nav>

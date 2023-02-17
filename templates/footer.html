@@ -1,0 +1,71 @@
+<footer>
+    <div class="container">
+        <div class="row fixed-bottom bg-dark">
+            <div class="col-md-12"
+                 style="height: 300px; background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{{ f_img }}'); background-size: cover; background-repeat: no-repeat; background-position: center;padding: 20px 20px 0 20px">
+                <div class="row">
+                    <div class="newsletter col-md-3" id="newsletter" style="margin-top: 15px">
+                        <div class="text-center">
+                            <p class="text-white text-center">Write feedback or post questions.</p>
+                            <form action="javascript:addFeedback()" method="POST">
+                                <div class="form-group text-center">
+                                    <label for="feedback"></label><input class="form-control" id="feedback" name="feedback"
+                                                                         placeholder="Enter feedback" style="width: 200px; display: inline-block; height: 40px; margin: auto auto 10px;"
+                                                                         type="text">
+                                    <button class="btn btn-primary" style="width: 100px; height: 40px; margin-left: 10px;"
+                                            type="submit">Feedback
+                                    </button>
+                                    <br>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-center">
+                            <img alt="Home" src="static/assets/home.ico" style="width: 56px; height: 56px;">
+                            <h3 class="text-white text-center">Triyan Mukherjee</h3>
+                            <button class="btn btn-primary" id="top btn" onclick="topFunction()" style="width: 80px; height: 40px; margin-top: 20px; margin-bottom: 50px;"
+                                    title="Go to top">
+                                <i class="fa-solid fa-arrow-up" style="font-size: 24px;"></i>
+                            </button>
+                            <br>
+                            <a href="/server" style="text-decoration: none; margin-right: 10px" target="_blank">
+                                <i class="fa-brands fa-discord" style="font-size: 30px; color: #7289DA;"></i>
+                            </a>
+                            <a href="/github" style="text-decoration: none; margin-right: 10px" target="_blank">
+                                <i class="fa-brands fa-github" style="font-size: 30px; color: #ffffff;"></i>
+                            </a>
+                            <a href="/email" style="text-decoration: none;" target="_blank">
+                                <i class="fa-brands fa-google" style="font-size: 30px; color: #DB4437;"></i>
+                            </a>
+                            <a href="/linkedin" style="text-decoration: none; margin-left: 10px" target="_blank">
+                                <i class="fa-brands fa-linkedin" style="font-size: 30px; color: #0E76A8;"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="quicklinks col-md-3" id="quicklinks" style="margin-top: 15px">
+                        <div class="text-center">
+                            <h3 class="text-white text-center">Quick Links</h3>
+                            <ul class="list-unstyled">
+                                <li style="margin-bottom: 10px">
+                                    <a class="text-white" href="/" style="text-decoration: none">
+                                        <i class="fa-solid fa-home" style="font-size: 12px;"></i>
+                                        Home
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 10px">
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <p class="text-white text-center" style="font-size: 12px;">© 2023 Triyan Mukherjee. All
+                                rights reserved.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
