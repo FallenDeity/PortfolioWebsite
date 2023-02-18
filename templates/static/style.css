@@ -5,23 +5,42 @@ html {
 }
 
 body {
-    margin: 0;
     padding: 0;
-    font-family: 'Yellowtail', cursive;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 16px;
-    line-height: 1.5;
-    background-color: #171717;
+    line-height: 1.6;
+    margin: 0;
+    background: radial-gradient(ellipse at center top, #0d2160, #031d34, #000000 50%);
     color: #ededed;
 }
 
 
+footer {
+    margin-top: 100px;
+}
+
+header {
+    margin-bottom: 164px;
+}
+
+
+.avatar {
+    width: 248px;
+    height: 248px;
+    border-radius: 50%;
+    border: 5px solid #6d1ac4;
+    box-shadow: 0 0 20px 0 #8f4fee;
+    margin: 0 auto;
+}
+
+
 .topnav {
-    background: linear-gradient(to right bottom, #1c558d, #33adc9);
     height: 80px;
     width: 100%;
-    overflow: hidden;
-    box-shadow: 0 0 20px #33adc9;
     color: #ededed;
+    position: fixed;
+    transition: top 0.3s;
+    top: 0;
 }
 
 
@@ -30,11 +49,14 @@ body {
     position: absolute;
     background: radial-gradient(circle, #3b0872, #7c33c9);
     width: 200px;
-    height: 100%;
     flex-flow: column;
     top: 0;
     right: 0;
     animation: fade 0.5s;
+    margin-right: 20px;
+    margin-top: 90px;
+    padding: 0 0 30px;
+    border-radius: 10px;
     box-shadow: 0 0 20px 0 #7d3ddc;
 }
 
@@ -42,6 +64,11 @@ body {
 #mobile-menu i {
     display: inline-block;
     padding-right: 10px;
+}
+
+#mobile-menu a {
+    border: none;
+    padding-top: 5px;
 }
 
 
@@ -53,21 +80,6 @@ body {
     100% {
         opacity: 1;
     }
-}
-
-
-.content {
-    padding: 16px;
-}
-
-.sticky {
-    position: fixed;
-    top: 0;
-    width: 100%;
-}
-
-.sticky + .content {
-    padding-top: 60px;
 }
 
 .topnav button {
@@ -90,19 +102,20 @@ body {
 }
 
 .topnav button.rounded_button {
-    background: #c3073f;
+    background: #3b0872;
     color: #ededed;
     height: 40px;
     border-radius: 10px;
     margin-top: 18px;
     padding: 10px 15px 15px 15px;
-    box-shadow: 0 0 10px #c3073f;
+    box-shadow: 0 0 10px #3b0872;
 }
 
 
 .topnav i {
-    display: block;
+    display: inline-block;
     font-size: 18px;
+    padding-right: 5px;
     margin-bottom: 5px;
 }
 
@@ -119,7 +132,7 @@ body {
 
 .topnav button.rounded_button:hover {
     color: #ededed;
-    background-color: #950740;
+    background-color: #7c33c9;
 }
 
 
@@ -156,4 +169,16 @@ body {
     .quicklinks {
         display: none;
     }
+}
+
+
+canvas {
+    height: 100%;
+    background-color: inherit;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    position: fixed;
+    opacity: 0.7;
 }

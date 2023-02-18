@@ -11,6 +11,7 @@ from fastapi.templating import Jinja2Templates
 
 from routes import Extension
 from utils.constants import DESCRIPTION, PATHS
+from utils.mail import Mail
 
 from .environment import config
 from .logger import Logger
@@ -22,6 +23,7 @@ __all__: tuple[str, ...] = ("Website",)
 
 class Website(fastapi.FastAPI):
     client: aiohttp.ClientSession
+    mail: Mail
     templates: Jinja2Templates = Jinja2Templates(directory=str(PATHS.TEMPLATES))
     _static: list[str] = [str(PATHS.STATIC), str(PATHS.ASSETS)]
 
@@ -72,6 +74,7 @@ class Website(fastapi.FastAPI):
     async def on_startup(self) -> None:
         self.logger.info("Starting up...")
         self.client = aiohttp.ClientSession()
+        self.mail = Mail(website=self)
         self._mount_files()
         self._load_files()
         self.logger.flair("Started up successfully.")

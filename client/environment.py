@@ -31,6 +31,7 @@ class EnvironmentVariable:
 
 class ENVIRONMENT:
     _instance: t.Optional["ENVIRONMENT"] = None
+    DISCORD_WEBHOOK = EnvironmentVariable(name="DISCORD_WEBHOOK")
 
     def __new__(cls, *args: t.Any, **kwargs: t.Any) -> "ENVIRONMENT":
         if cls._instance is None:

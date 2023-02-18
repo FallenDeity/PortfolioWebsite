@@ -1,10 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-{% include "headers.html" %}
+    {% include "headers.html" %}
     <body>
         <header>
             {% include "navbar.html" %}
+            <script type="text/javascript">responsive()</script>
         </header>
-    {% include "footer.html" %}
+        <div class="container" id="particles">
+            <div class="row">
+                <div class="col-md-4">
+                    <img alt="Avatar" class="avatar" src={{ a_img }}>
+                    <h1 class="title" style="color: #f1f1f1; line-height: 2">Triyan Mukherjee</h1>
+                    <h5 class="title" style="color: #f1f1f1; line-height: 2">Software Developer, Student</h5>
+                </div>
+                <div class="col-md-7 offset-md-1"
+                    style="font-size: 20px; margin-top: 10px; background: rgba(73,79,79,0.72); padding: 20px 20px 20px 20px; border-radius: 10px; height: max-content">
+                    <p class="align-content-lg-start">
+                        <code style="color: palevioletred; font-family: 'JetBrains Mono', monospace;">
+                            Hello! My name is Triyan Mukherjee and I am a 17 year old student from India.<br>
+                            Here, you'll find a collection of my academic work, personal projects, and a little bit about me.<br>
+                            I'm passionate about software development and almost anything tech related.<br>
+                            My hobbies include reading novels, anime and coding. I am a foodie too ;)<br>
+                            I'm always looking for new ways to challenge myself and learn something new.<br>
+                            Thank you for visiting and feel free to explore my website to learn more about me!
+                        </code>
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% include "footer.html" %}
     </body>
 </html>
