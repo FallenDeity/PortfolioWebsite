@@ -4,8 +4,13 @@ import typing
 from abc import ABC
 
 import attrs
+from pydantic import BaseModel
 
-__all__: tuple[str, ...] = ("Model", "User")
+__all__: tuple[str, ...] = (
+    "Model",
+    "User",
+    "Email",
+)
 
 
 @attrs.define
@@ -22,3 +27,9 @@ class User(Model):
     ip: str
     time: float
     feedback: str
+
+
+class Email(BaseModel):
+    email: str
+    message: str
+    subject: str = "Feedback"

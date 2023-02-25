@@ -1,22 +1,22 @@
 from __future__ import annotations
 
+import asyncio
 import importlib
 import inspect
 import pathlib
 import random
 import typing as t
+from functools import partial
 
 import aiohttp
 import fastapi
 import uvicorn
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from github import Github
 from starlette.exceptions import HTTPException
 
 from routes import Extension
 from utils.constants import DESCRIPTION, PATHS
-from utils.mail import Mail
 
 from .environment import config
 from .logger import Logger
@@ -28,7 +28,6 @@ __all__: tuple[str, ...] = ("Website",)
 
 class Website(fastapi.FastAPI):
     client: aiohttp.ClientSession
-    mail: Mail
     templates: Jinja2Templates = Jinja2Templates(directory=str(PATHS.TEMPLATES))
     _static: list[fastapi.routing.Mount] = [
         fastapi.routing.Mount("/static", StaticFiles(directory=str(PATHS.STATIC), html=True), name="static"),
@@ -55,10 +54,13 @@ class Website(fastapi.FastAPI):
             debug=debug,
             **kwargs,
         )
-        self.github: Github = Github(str(config.GITHUB_TOKEN))
         self.logger = Logger(name=__name__, file=False)
         self.config = config
         self.exception_handler(HTTPException)(self._exception_handler)
+
+    @staticmethod
+    async def async_run(func: t.Callable[..., t.Any], *args: t.Any, **kwargs: t.Any) -> t.Any:
+        return await asyncio.get_running_loop().run_in_executor(None, partial(func, *args, **kwargs))
 
     @staticmethod
     def get_image(path: str, format_: str = "jpg") -> str:
@@ -94,7 +96,6 @@ class Website(fastapi.FastAPI):
     async def on_startup(self) -> None:
         self.logger.info("Starting up...")
         self.client = aiohttp.ClientSession()
-        self.mail = Mail(website=self)
         self._mount_files()
         self._load_files()
         self.logger.flair("Started up successfully.")

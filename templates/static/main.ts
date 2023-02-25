@@ -69,3 +69,68 @@ function toggleThemeMode() {
     }
     toggleMarkdownTheme();
 }
+
+
+function validateEmail(email: string) {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
+}
+
+
+function submitForm() {
+    const email = document.getElementById('email') as HTMLInputElement;
+    const subject = document.getElementById('subject') as HTMLInputElement;
+    const message = document.getElementById('message') as HTMLTextAreaElement;
+    const submit = document.getElementById('submit') as HTMLInputElement;
+    submit.disabled = true;
+    submit.classList.add('cursor-not-allowed');
+    submit.children[0].classList.add('hidden');
+    submit.children[1].classList.remove('hidden');
+    const emailError = document.getElementById('alert-1');
+    const subjectError = document.getElementById('alert-2');
+    const messageError = document.getElementById('alert-3');
+    const popup = document.getElementById('popup-modal');
+    const popup_error = document.getElementById('popup-modal-error');
+    if (email.value === '' || !validateEmail(email.value)) {
+        emailError.classList.remove('hidden');
+    }
+    if (subject.value === '') {
+        subjectError.classList.remove('hidden');
+    }
+    if (message.value === '') {
+        messageError.classList.remove('hidden');
+    }
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/v1/feedback', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    let data = JSON.stringify({message: message.value, email: email.value, subject: subject.value});
+    xhr.send(data);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                popup.classList.remove('hidden');
+
+            } else {
+                popup_error.classList.remove('hidden');
+            }
+            email.value = "";
+            message.value = "";
+            subject.value = "";
+            submit.children[0].classList.remove('hidden');
+            submit.children[1].classList.add('hidden');
+            submit.disabled = false;
+        }
+    }
+}
+
+
+function closePopup() {
+    const popup = document.getElementById('popup-modal');
+    popup.classList.add('hidden');
+}
+
+
+function closePopupError() {
+    const popup = document.getElementById('popup-modal-error');
+    popup.classList.add('hidden');
+}

@@ -3,6 +3,8 @@ from __future__ import annotations
 import fastapi
 
 from utils.constants import DESCRIPTION, LINKS, SKILLS, VIDEOS
+from utils.mail import send_email
+from utils.models import Email
 
 from . import Extension, route
 
@@ -21,6 +23,29 @@ class Home(Extension):
                 "videos": VIDEOS.get_as_list(),
                 "desc": DESCRIPTION,
                 "skills": SKILLS.get_lucky_4(),
+            },
+        )
+
+    @route("/api/v1/feedback", method="POST", response_model=fastapi.responses.JSONResponse)
+    async def feedback(self, data: Email) -> fastapi.responses.JSONResponse:
+        print(data)
+        try:
+            send_email(self.app, data)
+        except Exception as e:
+            raise fastapi.exceptions.HTTPException(status_code=500, detail=str(e))
+        return fastapi.responses.JSONResponse(
+            {"status": "success", "message": "Feedback sent successfully!"}, status_code=200
+        )
+
+    @route(path="/contact", response_model=fastapi.responses.HTMLResponse)
+    async def contact(self, request: fastapi.Request) -> fastapi.responses.Response:
+        f_img = self.app.get_image("footers")
+        return self.app.templates.TemplateResponse(
+            "feedback-form.html",
+            {
+                "request": request,
+                "title": "Feedback",
+                "f_img": f_img,
             },
         )
 

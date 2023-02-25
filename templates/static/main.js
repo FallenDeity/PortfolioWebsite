@@ -69,3 +69,60 @@ function toggleThemeMode() {
     }
     toggleMarkdownTheme();
 }
+function validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+}
+function submitForm() {
+    var email = document.getElementById('email');
+    var subject = document.getElementById('subject');
+    var message = document.getElementById('message');
+    var submit = document.getElementById('submit');
+    submit.disabled = true;
+    submit.classList.add('cursor-not-allowed');
+    submit.children[0].classList.add('hidden');
+    submit.children[1].classList.remove('hidden');
+    var emailError = document.getElementById('alert-1');
+    var subjectError = document.getElementById('alert-2');
+    var messageError = document.getElementById('alert-3');
+    var popup = document.getElementById('popup-modal');
+    var popup_error = document.getElementById('popup-modal-error');
+    if (email.value === '' || !validateEmail(email.value)) {
+        emailError.classList.remove('hidden');
+    }
+    if (subject.value === '') {
+        subjectError.classList.remove('hidden');
+    }
+    if (message.value === '') {
+        messageError.classList.remove('hidden');
+    }
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/v1/feedback', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    var data = JSON.stringify({ message: message.value, email: email.value, subject: subject.value });
+    xhr.send(data);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                popup.classList.remove('hidden');
+            }
+            else {
+                popup_error.classList.remove('hidden');
+            }
+            email.value = "";
+            message.value = "";
+            subject.value = "";
+            submit.children[0].classList.remove('hidden');
+            submit.children[1].classList.add('hidden');
+            submit.disabled = false;
+        }
+    };
+}
+function closePopup() {
+    var popup = document.getElementById('popup-modal');
+    popup.classList.add('hidden');
+}
+function closePopupError() {
+    var popup = document.getElementById('popup-modal-error');
+    popup.classList.add('hidden');
+}

@@ -75,7 +75,6 @@ DESCRIPTION: str = """
                    I'm passionate about software development and almost anything tech related.
                    My hobbies include reading novels, anime and coding.
                    I'm always looking for new ways to challenge myself and learn something new.
-                   Thank you for visiting and feel free to explore my website to learn more about me!
                    """
 
 

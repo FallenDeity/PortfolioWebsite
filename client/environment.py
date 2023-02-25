@@ -35,6 +35,8 @@ class ENVIRONMENT:
     _instance: t.Optional["ENVIRONMENT"] = None
     DISCORD_WEBHOOK = EnvironmentVariable(name="DISCORD_WEBHOOK")
     GITHUB_TOKEN = EnvironmentVariable(name="GITHUB_TOKEN")
+    EMAIL_ID = EnvironmentVariable(name="EMAIL_ID")
+    EMAIL_PASSWORD = EnvironmentVariable(name="EMAIL_PASSWORD")
 
     def __new__(cls, *args: t.Any, **kwargs: t.Any) -> "ENVIRONMENT":
         if cls._instance is None:

@@ -35,26 +35,34 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
-<div class="jumbotron jumbotron-fluid p-4 ml-4 mr-4 rounded-4 dark:bg-gray-600 dark:text-gray-100"
-     style="margin-top: 128px">
+<div class="jumbotron jumbotron-fluid p-4 ml-4 mr-4 rounded-4"
+     style="margin-top: 128px; background: inherit; color: inherit">
     <div class="container">
         <div class="row flex justify-between">
-            <div class="col-sm-8">
-                <h1 class="display-4 font-bold">Introduction</h1>
-                <p class="lead mt-3 text-start font-semibold">{{ desc }}</p>
-                <button class="mt-4 transition text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-                        type="button" href="/profile" onclick="window.location.href='/profile'" style="box-shadow: 0 5px 10px 0 rgba(215,85,204,0.84);">
-                    Learn More
-                </button>
-            </div>
             <div class="col-sm-3">
                 <img alt="avatar" class="rounded-full ring-2 ring-gray-300 dark:ring-gray-500 mt-3" src="{{ a_img }}">
+            </div>
+            <div class="col-sm-8">
+                <h1 class="display-3 font-bold text-center font-extrabold">Introduction</h1>
+                <p class="lead mt-5 text-center font-light">{{ desc }}
+                </p>
+                <div class="row flex justify-center mt-5">
+                    <button class="col-sm-3 transition duration-75 text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg px-3 py-2.5 mr-2 mb-2"
+                        type="button" href="/profile" onclick="window.location.href='/profile'" style="box-shadow: 0 5px 10px 0 rgba(215,85,204,0.84);">
+                        <i class="fas fa-user-circle" aria-hidden="true"></i>
+                    Profile
+                    </button>
+                    <button href="/contact" onclick="window.location.href='/contact'" style="box-shadow: 0 5px 10px 0 rgba(248,95,11,0.84);" type="button" class="col-sm-3 transition duration-75 text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg px-3 py-2.5 text-center ml-5 mr-2 mb-2">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                        Contact Me
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <div class="container" style="margin-top: 128px">
-    <h1 class="text-center display-4 font-bold tracking-tight text-gray-900 dark:text-gray-200">Hobbies</h1>
+    <h1 class="text-center display-3 font-extrabold tracking-tight text-gray-900 dark:text-gray-200">Hobbies</h1>
         <div class="row flex justify-content-evenly items-center" style="margin-top: 64px">
             {% for skill in skills %}
                 <div class="max-w-sm border-0 rounded-lg bg-blue-400 dark:bg-blue-500 bg-opacity-25 dark:bg-opacity-25 p-0 w-64 h-64 hover:scale-110 transition duration-300 cursor-pointer mt-10" style="box-shadow: 0 5px 10px 0 rgba(72,73,112,0.88);">
