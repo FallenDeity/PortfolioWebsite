@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import datetime
 import enum
 import logging
@@ -64,10 +66,13 @@ class FileHandler(logging.FileHandler):
 
 
 class Logger(logging.Logger):
-    def __init__(self, *, name: str, level: int = logging.INFO, extention: str = "log") -> None:
+    _file_handler: t.Optional[logging.FileHandler] = None
+
+    def __init__(self, *, name: str, level: int = logging.INFO, extention: str = "log", file: bool = False) -> None:
         super().__init__(name, level)
         self._handler = logging.StreamHandler()
-        self._file_handler = FileHandler(ext=extention)
+        self.file_logger = file
+        self.extention = extention
         self._setup()
 
     def _setup(self) -> None:
@@ -75,15 +80,19 @@ class Logger(logging.Logger):
         self._handler.addFilter(RelativePathFilter())
         self._handler.setFormatter(Formatter())
         self.addHandler(self._handler)
-        self._file_handler.addFilter(RelativePathFilter())
-        self._file_handler.setFormatter(Formatter())
-        self.addHandler(self._file_handler)
+        if self.file_logger:
+            self._file_handler = FileHandler(ext=self.extention)
+            self._file_handler.addFilter(RelativePathFilter())
+            self._file_handler.setFormatter(Formatter())
+            self.addHandler(self._file_handler)
         logging.addLevelName(FLAIR, "FLAIR")
 
     def set_formatter(self, formatter: logging.Formatter) -> None:
         """Set the formatter."""
         self._handler.setFormatter(formatter)
-        self._file_handler.setFormatter(formatter)
+        if self.file_logger:
+            assert self._file_handler is not None
+            self._file_handler.setFormatter(formatter)
 
     def flair(self, message: str, *args: t.Any, **kwargs: t.Any) -> None:
         """Record a flair log."""

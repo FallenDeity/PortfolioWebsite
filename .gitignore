@@ -183,3 +183,7 @@ poetry.lock
 
 # Logs
 logs/
+
+*.code-workspace
+.space
+Spacefile

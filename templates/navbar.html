@@ -1,39 +1,59 @@
-<nav>
-    <div class="topnav" id="Navbar">
-        <button class="left" href="/" style="font-size: 36px;font-weight: bold;margin-left: 10px;">
-            <img alt="Home" src="static/assets/home.png" style="width: 48px; height: 48px">
-            Home
-        </button>
-        <a class="icon" href="javascript:void(0);" id="menu" onclick="topNav()" style="margin-right: 20px">
-            <i aria-hidden="true" class="fa-solid fa-bars" id="menu-btn"></i>
-            <div class="dropdown" id="mobile-menu">
-                <a href="/blog"><i aria-hidden="true" class="fa-solid fa-blog"></i>Blog</a>
-                <a href="/profile"><i aria-hidden="true" class="fa-solid fa-user-secret rounded"></i>Profile</a>
-                <a href="/projects"><i aria-hidden="true" class="fa-solid fa-microchip"></i>Projects</a>
-                <a href="/achievements"><i aria-hidden="true" class="fa-solid fa-trophy"></i>Achievements</a>
-                <a href="/source"><i aria-hidden="true" class="fa-brands fa-github-alt rounded"></i>Source Code</a>
-            </div>
+<nav class="bg-gray-200 dark:bg-gray-800 drop-shadow-[0_0_20px_rgba(255,255,255,0.7)] dark:drop-shadow-[0_0_20px_rgba(0,0,0,1)] dark:border-gray-700 py-2.5 z-50 fixed-top sticky"
+     id="Navbar">
+    <div class="container flex flex-wrap items-center justify-between mx-auto">
+        <a class="flex items-center text-decoration-none hover:text-gray-800" href="/">
+            <img alt="Triyan Logo" class="h-6 mr-3 sm:h-10" src="static/assets/home.png"/>
+            <span class="self-center text-xl font-bold whitespace-nowrap dark:text-white"
+                  style="font-size: 24px">Triyan</span>
         </a>
-        <button class="right rounded_button" href="/profile" onclick="location.href='/profile'"
-                style="margin-top: 20px">
-            <i aria-hidden="true" class="fa-solid fa-user-secret rounded"></i>
-            Profile
-        </button>
-        <button class="right rounded_button" href="/source" onclick="location.href='/source'" style="margin-top: 20px">
-            <i aria-hidden="true" class="fa-brands fa-github-alt rounded"></i>
-            Source Code
-        </button>
-        <button class="right" href="/achievements" onclick="location.href='/achievements'" style="margin-right: 50px">
-            <i aria-hidden="true" class="fa-solid fa-trophy"></i>
-            Achievements
-        </button>
-        <button class="right" href="/projects" onclick="location.href= '/projects'">
-            <i aria-hidden="true" class="fa-solid fa-microchip"></i>
-            Projects
-        </button>
-        <button class="right" href="/blog" onclick="location.href= '/blog'">
-            <i aria-hidden="true" class="fa-solid fa-blog"></i>
-            Blog
-        </button>
+        <div class="flex md:order-2">
+            <label class="relative inline-flex items-center cursor-pointer mt-3 justify-end mr-3">
+                <input class="sr-only peer" id="theme-toggle" onclick="toggleThemeMode()" type="checkbox"
+                       value="">
+                <div class="w-14 h-7 bg-gray-500 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                    <i class="fas fa-moon text-gray-100 absolute right-1 top-1/2 transform -translate-y-1/2"
+                       id="moon" style="margin-right: 3px"></i>
+                    <i class="fas fa-sun text-gray-100 absolute left-1 top-1/2 transform -translate-y-1/2"
+                       id="sun" style="margin-left: 3px"></i>
+                </div>
+            </label>
+            <button type="button" class="mt-1 text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none px-2.5 focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm py-2.5 text-center mr-2 mb-2 shadow-md shadow-blue-500/50">
+                <i class="fa-brands fa-github mr-2"></i>
+                <a class="text-decoration-none hover:text-white" href="/source">Source Code</a>
+            </button>
+            <button aria-controls="navbar-sticky" aria-expanded="false"
+                    class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                    data-collapse-toggle="navbar-sticky" type="button">
+                <span class="sr-only">Open main menu</span>
+                <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path clip-rule="evenodd"
+                          d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                          fill-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+            <ul class="flex flex-col items-center justify-between w-full space-y-2 text-sm font-medium text-gray-800 md:flex-row md:space-y-0 md:space-x-4 md:text-base dark:text-gray-100">
+                <li class="flex">
+                    <a class="text-decoration-none inline-flex items-center px-2 py-1 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 hover:text-gray-800 dark:hover:text-gray-800"
+                       href="/blog">
+                        <i class="fas fa-blog mr-2 hover:text-gray-800"></i>
+                        Blog</a>
+                </li>
+                <li class="flex">
+                    <a class="text-decoration-none inline-flex items-center px-2 py-1 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 hover:text-gray-800 dark:hover:text-gray-800"
+                       href="/profile">
+                        <i class="fas fa-user mr-2 hover:text-gray-800"></i>
+                        About</a>
+                </li>
+                <li class="flex">
+                    <a class="text-decoration-none inline-flex items-center px-2 py-1 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 hover:text-gray-800 dark:hover:text-gray-800"
+                       href="/projects">
+                        <i class="fas fa-project-diagram mr-2 hover:text-gray-800"></i>
+                        Projects</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>

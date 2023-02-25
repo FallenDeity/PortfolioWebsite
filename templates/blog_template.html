@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+{% include "headers.html" %}
+<body class="dark:bg-gray-800 dark:text-gray-100">
+{% include "navbar.html" %}
+<article class="markdown-body-light" style="margin-top: 64px; padding: 80px">
+    {{ content | safe }}
+</article>
+{% include "footer.html" %}
+</body>
+</html>

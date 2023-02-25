@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 import importlib
 import inspect
 import pathlib
+import random
 import typing as t
 
 import aiohttp
@@ -8,6 +11,8 @@ import fastapi
 import uvicorn
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from github import Github
+from starlette.exceptions import HTTPException
 
 from routes import Extension
 from utils.constants import DESCRIPTION, PATHS
@@ -25,7 +30,10 @@ class Website(fastapi.FastAPI):
     client: aiohttp.ClientSession
     mail: Mail
     templates: Jinja2Templates = Jinja2Templates(directory=str(PATHS.TEMPLATES))
-    _static: list[str] = [str(PATHS.STATIC), str(PATHS.ASSETS)]
+    _static: list[fastapi.routing.Mount] = [
+        fastapi.routing.Mount("/static", StaticFiles(directory=str(PATHS.STATIC), html=True), name="static"),
+        fastapi.routing.Mount("/assets", StaticFiles(directory=str(PATHS.ASSETS), html=True), name="assets"),
+    ]
 
     def __init__(
         self,
@@ -33,6 +41,7 @@ class Website(fastapi.FastAPI):
         title: str = __author__,
         description: str = DESCRIPTION,
         docs: str | None = None,
+        redoc: str | None = None,
         debug: bool = False,
         **kwargs: t.Any,
     ) -> None:
@@ -42,18 +51,29 @@ class Website(fastapi.FastAPI):
             on_startup=[self.on_startup],
             on_shutdown=[self.on_shutdown],
             docs_url=docs,
-            redoc_url=docs,
+            redoc_url=redoc,
             debug=debug,
             **kwargs,
         )
-        self.logger = Logger(name=__name__)
+        self.github: Github = Github(str(config.GITHUB_TOKEN))
+        self.logger = Logger(name=__name__, file=False)
         self.config = config
+        self.exception_handler(HTTPException)(self._exception_handler)
+
+    @staticmethod
+    def get_image(path: str, format_: str = "jpg") -> str:
+        images = [i.as_posix().split("/static")[-1] for i in (PATHS.ASSETS / path).glob(f"*.{format_}")]
+        return random.choice(images)
+
+    async def _exception_handler(self, request: fastapi.Request, _exc: HTTPException) -> fastapi.responses.Response:
+        f_img = self.get_image("footers")
+        self.logger.error(f"Error: {_exc.detail}")
+        return self.templates.TemplateResponse("error.html", {"request": request, "name": "Error", "f_img": f_img})
 
     def _mount_files(self) -> None:
-        for path in self._static:
-            tag = path.split("\\")[-1]
-            self.routes.append(fastapi.routing.Mount(f"/{tag}", StaticFiles(directory=path), name=tag))
-            self.logger.info(f"Mounted {tag} files")
+        self.logger.info("Mounting files")
+        self.routes.extend(self._static)
+        self.logger.info("Files mounted")
 
     def _auto_setup(self, path: str) -> None:
         module = importlib.import_module(path)
@@ -87,7 +107,7 @@ class Website(fastapi.FastAPI):
     def run(self) -> None:
         self.logger.flair("Running...")
         uvicorn.run(
-            "__main__:app",
+            "main:app",
             reload=True,
             reload_dirs=[str(PATHS.ROUTES), str(PATHS.TEMPLATES)],
             use_colors=True,

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import functools
 import inspect
 import time
@@ -21,7 +23,7 @@ T = t.TypeVar("T", bound=t.Callable[[fastapi.Request], t.Coroutine[t.Any, t.Any,
 class Route:
     path: str
     method: str
-    response_class: t.Any
+    response_model: t.Any
     name: str
 
 
@@ -53,18 +55,21 @@ class Extension(fastapi.APIRouter):
     def _setup(self) -> None:
         for name, obj in inspect.getmembers(self):
             if isinstance(_route := getattr(obj, "_route", None), Route):
-                self.add_api_route(
-                    _route.path,
-                    obj,
-                    name=_route.name,
-                    methods=[_route.method],
-                    response_class=_route.response_class,
-                )
+                try:
+                    self.add_api_route(
+                        _route.path,
+                        obj,
+                        methods=[_route.method],
+                        name=_route.name,
+                        response_model=_route.response_model,
+                    )
+                except fastapi.exceptions.FastAPIError:
+                    self.add_api_route(_route.path, obj, methods=[_route.method], name=_route.name)
                 self.app.logger.info(f"Loaded {name} route")
 
 
 def route(
-    path: str | None = None, *, method: str = "GET", response_class: t.Any = None
+    path: str | None = None, *, method: str = "GET", response_model: t.Any = None
 ) -> t.Callable[..., t.Callable[[t.Any], t.Any]]:
     @functools.wraps(route)
     def wrapper(func: T) -> T:
@@ -72,8 +77,8 @@ def route(
         if first_arg.name != "self":
             raise TypeError("Route must be a class method")
         path_ = path or f"/{func.__name__}"
-        response_model = response_class or inspect.signature(func).return_annotation or fastapi.Response
-        custom = Route(path=path_, method=method, response_class=response_model, name=func.__name__)
+        _response_model = response_model or inspect.signature(func).return_annotation or fastapi.Response
+        custom = Route(path=path_, method=method, response_model=_response_model, name=func.__name__)
         setattr(func, "_route", custom)
         return func
 

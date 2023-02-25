@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import typing as t
 
@@ -32,6 +34,7 @@ class EnvironmentVariable:
 class ENVIRONMENT:
     _instance: t.Optional["ENVIRONMENT"] = None
     DISCORD_WEBHOOK = EnvironmentVariable(name="DISCORD_WEBHOOK")
+    GITHUB_TOKEN = EnvironmentVariable(name="GITHUB_TOKEN")
 
     def __new__(cls, *args: t.Any, **kwargs: t.Any) -> "ENVIRONMENT":
         if cls._instance is None:
