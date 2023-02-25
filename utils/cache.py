@@ -3,7 +3,6 @@ from __future__ import annotations
 import time
 import typing
 
-
 __all__: tuple[str, ...] = (
     "ExpiringCache",
     "ExpiringEmailCache",

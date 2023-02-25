@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import fastapi
 
+from utils.cache import ExpiringEmailCache
 from utils.constants import DESCRIPTION, LINKS, SKILLS, VIDEOS
 from utils.mail import send_email
 from utils.models import Email
-from utils.cache import ExpiringEmailCache
 
 from . import Extension, route
 
@@ -33,9 +33,9 @@ class Home(Extension):
     async def feedback(self, data: Email) -> fastapi.responses.JSONResponse:
         if data.email in self._email_cache:
             raise fastapi.exceptions.HTTPException(status_code=429, detail="Too many requests!")
-        self._email_cache[data.email] = (True,)
+        self._email_cache[data.email] = (True, 3600.0)
         try:
-            send_email(self.app, data)
+            await self.app.async_run(send_email, data)
         except Exception as e:
             raise fastapi.exceptions.HTTPException(status_code=500, detail=str(e))
         return fastapi.responses.JSONResponse(
