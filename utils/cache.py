@@ -3,13 +3,10 @@ from __future__ import annotations
 import time
 import typing
 
-if typing.TYPE_CHECKING:
-    from utils.models import User  # noqa: F401
-
 
 __all__: tuple[str, ...] = (
     "ExpiringCache",
-    "ExpiringFeedbackCache",
+    "ExpiringEmailCache",
 )
 
 
@@ -40,5 +37,5 @@ class ExpiringCache(dict[KT, VT]):
         super().__setitem__(key, (value[0], time.monotonic()))  # type: ignore
 
 
-class ExpiringFeedbackCache(ExpiringCache[str, tuple["User", float]]):
+class ExpiringEmailCache(ExpiringCache[str, str]):
     ...

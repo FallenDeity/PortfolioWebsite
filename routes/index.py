@@ -5,11 +5,14 @@ import fastapi
 from utils.constants import DESCRIPTION, LINKS, SKILLS, VIDEOS
 from utils.mail import send_email
 from utils.models import Email
+from utils.cache import ExpiringEmailCache
 
 from . import Extension, route
 
 
 class Home(Extension):
+    _email_cache: ExpiringEmailCache = ExpiringEmailCache(seconds=3600)
+
     @route(path="/", response_model=fastapi.responses.HTMLResponse)
     async def home(self, request: fastapi.Request) -> fastapi.responses.Response:
         f_img, a_img = self.app.get_image("footers"), self.app.get_image("avatars", "png")
@@ -28,7 +31,9 @@ class Home(Extension):
 
     @route("/api/v1/feedback", method="POST", response_model=fastapi.responses.JSONResponse)
     async def feedback(self, data: Email) -> fastapi.responses.JSONResponse:
-        print(data)
+        if data.email in self._email_cache:
+            raise fastapi.exceptions.HTTPException(status_code=429, detail="Too many requests!")
+        self._email_cache[data.email] = (True,)
         try:
             send_email(self.app, data)
         except Exception as e:
