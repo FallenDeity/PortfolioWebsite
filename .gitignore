@@ -187,3 +187,5 @@ logs/
 *.code-workspace
 .space
 Spacefile
+
+node_modules/
