@@ -13,6 +13,7 @@ import fastapi
 import uvicorn
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from github import Github
 from starlette.exceptions import HTTPException
 
 from routes import Extension
@@ -56,6 +57,7 @@ class Website(fastapi.FastAPI):
         )
         self.logger = Logger(name=__name__, file=False)
         self.config = config
+        self.github = Github(str(self.config.GITHUB_TOKEN))
         self.exception_handler(HTTPException)(self._exception_handler)
 
     @staticmethod

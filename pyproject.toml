@@ -17,6 +17,7 @@ types-humanfriendly = "^10.0.1.5"
 types-PyYAML = "^6.0.12.6"
 types-ujson = "^5.7.0.0"
 PyGithub = "^1.58.0"
+bs4 = "^0.0.1"
 
 
 [tool.poetry.group.dev.dependencies]

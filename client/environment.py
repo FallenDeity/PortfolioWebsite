@@ -37,6 +37,8 @@ class ENVIRONMENT:
     GITHUB_TOKEN = EnvironmentVariable(name="GITHUB_TOKEN")
     EMAIL_ID = EnvironmentVariable(name="EMAIL_ID")
     EMAIL_PASSWORD = EnvironmentVariable(name="EMAIL_PASSWORD")
+    GOOGLE_API_KEY = EnvironmentVariable(name="GOOGLE_API_KEY")
+    SEARCH_ENGINE = EnvironmentVariable(name="SEARCH_ENGINE")
 
     def __new__(cls, *args: t.Any, **kwargs: t.Any) -> "ENVIRONMENT":
         if cls._instance is None:

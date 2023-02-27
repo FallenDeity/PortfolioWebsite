@@ -134,3 +134,23 @@ function closePopupError() {
     const popup = document.getElementById('popup-modal-error');
     popup.classList.add('hidden');
 }
+
+
+function getImagefromTitle (id: string) {
+    let title = document.getElementById("title_" + id);
+    let image = document.getElementById("image_" + id) as HTMLDivElement;
+    let xhr = new XMLHttpRequest();
+    let data = JSON.stringify({query: title.innerText});
+    xhr.open('POST', '/api/v1/image', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(data);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                let response = JSON.parse(xhr.responseText);
+                image.style.backgroundImage = "url(" + response.url + ")";
+                image.classList.remove("animate-pulse");
+            }
+        }
+    }
+}

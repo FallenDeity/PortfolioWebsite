@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+{% include "headers.html" %}
+<body class="dark:bg-gray-800 dark:text-gray-100 h-full">
+{% include "navbar.html" %}
+<div class="container" style="padding: 80px">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-2 font-extrabold text-center" style="margin-top: 32px">Blog</h1>
+            <br>
+            <div class="flex flex-wrap justify-between" style="margin-top: 64px">
+                {% for gist in gists %}
+                <div class="absolute z-10 invisible inline-block w-64 text-sm font-light text-gray-700 transition-opacity duration-300 bg-gray-300 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:bg-gray-800"
+                     data-popover id="{{ gist.id }}"
+                     role="tooltip">
+                    <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-700 dark:bg-gray-900">
+                        <h3 class="font-semibold text-gray-900 dark:text-white">Created At</h3>
+                    </div>
+                    <div class="px-3 py-2">
+                        <p>{{ gist.created_at }}</p>
+                    </div>
+                    <div data-popper-arrow></div>
+                </div>
+                <div class="card bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 mb-3 shadow-md dark:shadow-gray-300 shadow-gray-700 dark:hover:shadow-gray-400 hover:shadow-gray-500 hover:scale-105 transform transition duration-500 ease-in-out hover:shadow-xl"
+                     style="max-width: 300px">
+                    <div class="card-img-top bg-gray-300 dark:bg-gray-600 h-48 w-full object-cover object-center animate-pulse"
+                         id="image_{{ gist.id }}"
+                         style="background-size: cover; background-position: center; background-repeat: no-repeat;">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-xl font-semibold tracking-tight text-gray-900 dark:text-white"
+                            id="title_{{ gist.id }}">{{
+                            gist.title }}</h5>
+                        <p class="card-text mt-3">{{ gist.description or gist.custom_description }}</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div>
+                                <button class="btn btn-primary border-info-subtle"
+                                        href="{{ gist.html_url }}"
+                                        onclick="window.location.href = this.getAttribute('href')">
+                                    <i class="bi bi-github"></i>
+                                    View
+                                </button>
+                                <button class="btn btn-primary border-info-subtle"
+                                        href="/posts?gist_id={{ gist.id }}"
+                                        onclick="window.location.href = this.getAttribute('href')">
+                                    <i class="bi bi-book"></i>
+                                    Read
+                                </button>
+                            </div>
+                            <div class="d-flex align-items-center" data-popover-target="{{ gist.id }}">
+                                <svg class="text-warning" fill="currentColor" title="star" viewBox="0 0 576 512"
+                                     width="16">
+                                    <path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"/>
+                                </svg>
+                                <small class="ms-1">{{ gist.stars }} stars</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>getImagefromTitle("{{ gist.id }}")</script>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% include "footer.html" %}
+</body>
+</html>

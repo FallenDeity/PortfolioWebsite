@@ -13,6 +13,7 @@ __all__: tuple[str, ...] = (
     "LINKS",
     "SKILLS",
     "VIDEOS",
+    "GITHUB_USERNAME",
 )
 
 
@@ -76,6 +77,7 @@ DESCRIPTION: str = """
                    My hobbies include reading novels, anime and coding.
                    I'm always looking for new ways to challenge myself and learn something new.
                    """
+GITHUB_USERNAME: str = "FallenDeity"
 
 
 class PATHS(BaseEnum):

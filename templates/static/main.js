@@ -126,3 +126,21 @@ function closePopupError() {
     var popup = document.getElementById('popup-modal-error');
     popup.classList.add('hidden');
 }
+function getImagefromTitle(id) {
+    var title = document.getElementById("title_" + id);
+    var image = document.getElementById("image_" + id);
+    var xhr = new XMLHttpRequest();
+    var data = JSON.stringify({ query: title.innerText });
+    xhr.open('POST', '/api/v1/image', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(data);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                image.style.backgroundImage = "url(" + response.url + ")";
+                image.classList.remove("animate-pulse");
+            }
+        }
+    };
+}

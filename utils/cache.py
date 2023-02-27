@@ -36,5 +36,5 @@ class ExpiringCache(dict[KT, VT]):
         super().__setitem__(key, (value[0], time.monotonic()))  # type: ignore
 
 
-class ExpiringEmailCache(ExpiringCache[str, str]):
+class ExpiringEmailCache(ExpiringCache[str, typing.Tuple[str, float]]):
     ...
