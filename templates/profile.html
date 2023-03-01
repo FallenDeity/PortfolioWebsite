@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html class="dark" lang="en">
 {% include "headers.html" %}
 <body class="dark:bg-gray-800 dark:text-gray-100 overflow-x-hidden">
 {% include "navbar.html" %}
 <div class="card jumbotron-fluid p-0 border-0 ml-4 mr-4 rounded-4 dark:bg-gray-600 dark:text-gray-100 bg-gray-300 text-gray-800"
      style="margin-top: 128px; box-shadow: 10px 10px 15px 0 rgba(110,110,119,0.88);">
-    <div class="card-img-top bg-cover bg-no-repeat bg-center h-64" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('{{ f_img }}');">
+    <div class="card-img-top bg-cover bg-no-repeat bg-center h-64"
+         style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('{{ f_img }}');">
     </div>
     <div class="container">
         <div class="row justify-content-center">
@@ -14,13 +15,8 @@
                 <img alt="avatar" class="rounded-full" src="{{ a_img }}">
             </div>
         </div>
-        <div class="row">
-            <div class="p-3 text-center">
-                    <h1 class="display-4 font-bold">{{ title }}</h1>
-            </div>
-        </div>
         <div class="row flex items-center">
-            <div class="col-sm-8">
+            <div class="col-sm-6">
                 <div class="p-5">
                     <div class="rounded-lg shadow-xl bg-gray-900 text-white max-w-[480px]">
                         <div class="border-b border-gray-800 px-8 py-3">
@@ -29,21 +25,119 @@
                             <div class="inline-block w-3 h-3 mr-2 rounded-full bg-green-400"></div>
                         </div>
                         <div class="px-8 py-6">
-                            <p><em class="text-blue-400">const</em> <span class="text-green-400">aboutMe</span> <span
-                                    class="text-pink-500">=</span> <em class="text-blue-400">function</em>() {</p>
-                            <p>&nbsp;&nbsp;<span class="text-pink-500">return</span> {</p>
+                            <p class="text-red-400"><em class="text-blue-400">const</em> <span class="text-green-400">aboutMe</span>
+                                <span
+                                        class="text-pink-500">=</span> <em class="text-blue-400"></em>() <span
+                                        class="text-pink-500">=></span> {</p>
+                            <p class="text-red-400">&nbsp;&nbsp;<span class="text-pink-500">return</span> {</p>
                             <p>&nbsp;&nbsp;&nbsp;&nbsp;name: <span class="text-yellow-300">'Triyan Mukherjee'</span>,
                             </p>
-                            <p>&nbsp;&nbsp;&nbsp;&nbsp;position: <span
-                                    class="text-yellow-300">'fullstack-developer'</span>,
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;age: <span
+                                    class="text-sky-300">17</span>,
                             </p>
-                            <p>&nbsp;&nbsp;&nbsp;&nbsp;website: <span class="text-yellow-300">'<a
-                                    class="text-decoration-none text-yellow-300 hover:text-green-500 focus:border-none" href="/"
-                                    target="_blank">{{ web }}</a>'</span>,
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;hobbies: <span class="text-purple-600">[</span><span
+                                    class="text-yellow-300">'Coding'</span>, <span
+                                    class="text-yellow-300">'Gaming'</span>, <span
+                                    class="text-yellow-300">'Watching Anime'</span>,
+                                <span class="text-purple-600">]</span>
                             </p>
-                            <p>&nbsp;&nbsp;}</p>
-                            <p>}</p>
+                            <p class="text-red-400">&nbsp;&nbsp;}</p>
+                            <p class="text-red-400">}</p>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <h1 class="text-center text-2xl font-bold">Programming Languages</h1>
+                <div class="flex flex-wrap justify-center mt-5">
+                    {% for badge in badges['Programming Languages'] %}
+                    <div class="p-3">
+                        <img alt="{{ category }}" class="w-24 h-24" data-tooltip-placement="right"
+                             data-tooltip-target="{{ badge.name }}" src="{{ badge.image }}">
+                        <div class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+                             id="{{ badge.name }}" style="width: 150px"
+                             role="tooltip">
+                            <div class="flex justify-between">
+                                <span>{{ badge.name }}</span>
+                                <span>{{ badge.completion * 100 }}%</span>
+                            </div>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-800">
+                                <div class="{{ badge.color }} h-2.5 rounded-full" style="width: {{ badge.completion * 100 }}%"></div>
+                            </div>
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="p-3 text-center">
+                <h1 class="display-5 font-bold">Stats</h1>
+                <div class="flex flex-wrap justify-center mt-5">
+                    <img style="height: 200px;" alt="Stats" class="object-fit-contain p-2" src="https://github-readme-stats.vercel.app/api?username=FallenDeity&show_icons=true&theme=radical&count_private=true&border_color=ffffff&line_height=20">
+                    <img alt="Top Langs" class="object-fit-contain p-2" src="https://streak-stats.demolab.com/?user=FallenDeity&theme=radical" style="height: 200px;">
+                    <img alt="WakaTime Stats" class="object-fit-contain p-2" src="https://github-readme-stats.vercel.app/api/wakatime?username=FallenDeity&theme=radical&layout=compact&border_color=ffffff&bg_color=101010">
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="p-3 text-center">
+                <h1 class="display-5 font-bold">Frameworks and Technologies</h1>
+                <div class="flex flex-wrap justify-center mt-5">
+                    {% for badge in badges['Frameworks'] %}
+                    <div class="p-5">
+                        <img alt="{{ category }}" class="object-fit-contain" data-tooltip-placement="right"
+                             data-tooltip-target="{{ badge.name }}" src="{{ badge.image }}" style="width: 100px; height: 100px;">
+                        <p class="text-center text-sm text-xl font-semibold mt-2">{{ badge.name }}</p>
+                        <div class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+                             id="{{ badge.name }}"
+                             role="tooltip">
+                            <div class="flex justify-between">
+                                <span>{{ badge.name }}</span>
+                            </div>
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="p-3 text-center">
+                <h1 class="display-5 font-bold">Social Links</h1>
+                <div class="flex flex-wrap justify-center mt-5">
+                    <div class="p-3">
+                        <a href="/github" class="text-decoration-none font-extrabold text-xl text-white">
+                            <div class="flex items-center justify-center w-36 p-2 bg-gradient-to-br from-gray-300 to-gray-900 rounded-lg shadow-md hover:shadow-gray-500 shadow-gray-500 hover:shadow-lg space-x-3 hover:bg-gradient-to-br hover:from-gray-900 hover:to-gray-300">
+                                <img alt="GitHub" class="w-10 h-10" src="https://img.icons8.com/ios-filled/50/000000/github.png">
+                                <span class="font-semibold text-xl">GitHub</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="p-3">
+                        <a href="/discord" class="text-decoration-none font-extrabold text-xl text-white">
+                            <div class="flex items-center justify-center w-36 p-2 bg-gradient-to-br from-indigo-300 to-indigo-900 rounded-lg shadow-md shadow-indigo-500 hover:shadow-indigo-500 hover:shadow-lg space-x-3 hover:bg-gradient-to-br hover:from-indigo-900 hover:to-indigo-300">
+                                <img alt="Discord" class="w-10 h-10" src="https://img.icons8.com/ios-filled/50/ffffff/discord-logo.png">
+                                <span class="font-semibold text-xl">Discord</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="p-3">
+                        <a href="/linkedin" class="text-decoration-none font-extrabold text-xl text-white">
+                            <div class="flex items-center justify-center w-36 p-2 bg-gradient-to-br from-blue-300 to-blue-900 rounded-lg shadow-md hover:shadow-lg shadow-blue-500 hover:shadow-blue-500 space-x-3 hover:bg-gradient-to-br hover:from-blue-900 hover:to-blue-300">
+                                <img alt="LinkedIn" class="w-10 h-10" src="https://img.icons8.com/ios-filled/50/ffffff/linkedin.png">
+                                <span class="font-semibold text-xl">LinkedIn</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="p-3">
+                        <a href="/email" class="text-decoration-none font-extrabold text-xl text-white">
+                            <div class="flex items-center justify-center w-36 p-2 bg-gradient-to-br from-red-300 to-red-900 rounded-lg shadow-md hover:shadow-lg shadow-red-500 hover:shadow-red-500 space-x-3 hover:bg-gradient-to-br hover:from-red-900 hover:to-red-300">
+                                <img alt="Email" class="w-10 h-10" src="https://img.icons8.com/ios-filled/50/ffffff/gmail.png">
+                                <span class="font-semibold text-xl">Email</span>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>

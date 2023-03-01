@@ -16,6 +16,27 @@ function toggleTheme() {
 }
 
 
+function AddMetaImage() {
+    let url = window.location.href;
+    let xhr = new XMLHttpRequest();
+    let data = JSON.stringify({url: url});
+    xhr.open('POST', '/api/v1/screenshot', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(data);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                let response = JSON.parse(xhr.responseText);
+                let meta = document.querySelector('meta[property="og:image"]');
+                if (meta) {
+                    meta.setAttribute('content', response.url);
+                }
+            }
+        }
+    }
+}
+
+
 window.addEventListener("load", () => {
     toggleMarkdownTheme();
 });

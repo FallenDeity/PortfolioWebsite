@@ -3,10 +3,12 @@
 {% include "headers.html" %}
 <body class="dark:bg-gray-800 dark:text-gray-100">
 {% include "navbar.html" %}
-<div class="carousel slide carousel-fade" data-ride="carousel" id="carouselExampleIndicators">
+<div class="carousel slide" data-ride="carousel" id="carouselExampleIndicators">
     <ol class="carousel-indicators">
        {% for i in range(0, 3) %}
-            <li data-target="#carouselExampleIndicators" data-slide-to="{{ i }}" {% if i == 0 %}class="active"{% endif %}></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="{{ i }}"
+                {% if i == 0 %}class="active cursor-pointer"{% else %}class="cursor-pointer"{% endif %}>
+            </li>
        {% endfor %}
     </ol>
     <div class="carousel-inner">
@@ -20,8 +22,8 @@
                             title="YouTube video player"></iframe>
                 </div>
                 <div class="carousel-caption d-none d-md-block">
-                    <h1 style="font-size: 50px;" class="display-5 font-bold">{{ videos[i].title }}</h1>
-                    <p>{{ videos[i].description }}</p>
+                    <h1 style="font-size: 50px;" class="display-4 font-extrabold">{{ videos[i].title }}</h1>
+                    <p class="display-6 font-semibold">{{ videos[i].description }}</p>
                 </div>
             </div>
         {% endfor %}
@@ -46,13 +48,13 @@
                 <h1 class="display-3 font-bold text-center font-extrabold">Introduction</h1>
                 <p class="lead mt-5 text-center font-light">{{ desc }}
                 </p>
-                <div class="row flex justify-center mt-5">
-                    <button class="col-sm-3 transition duration-75 text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg px-3 py-2.5 mr-2 mb-2"
+                <div class="row flex justify-center mt-5 flex-wrap items-center w-auto justify-content-evenly">
+                    <button class="col-sm-3 transition duration-75 text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg px-3 py-2.5 mb-2"
                         type="button" href="/profile" onclick="window.location.href='/profile'" style="box-shadow: 0 5px 10px 0 rgba(215,85,204,0.84);">
                         <i class="fas fa-user-circle" aria-hidden="true"></i>
                     Profile
                     </button>
-                    <button href="/contact" onclick="window.location.href='/contact'" style="box-shadow: 0 5px 10px 0 rgba(248,95,11,0.84);" type="button" class="col-sm-3 transition duration-75 text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg px-3 py-2.5 text-center ml-5 mr-2 mb-2">
+                    <button href="/contact" onclick="window.location.href='/contact'" style="box-shadow: 0 5px 10px 0 rgba(248,95,11,0.84);" type="button" class="col-sm-3 transition duration-75 text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg px-3 py-2.5 text-center mb-2">
                         <i class="fas fa-envelope" aria-hidden="true"></i>
                         Contact Me
                     </button>
@@ -74,6 +76,35 @@
             {% endfor %}
         </div>
     </div>
+<h1 class="text-center display-3 font-extrabold tracking-tight text-gray-900 dark:text-gray-200" style="margin-top: 128px">Certificates</h1>
+<div  class="carousel slide" data-ride="carousel" id="Certificates" style="margin-top: 128px;">
+    <ol class="carousel-indicators">
+       {% for i in range(0, 5) %}
+            <li data-target="#Certificates" data-slide-to="{{ i }}"
+                class="{% if i == 0 %}active cursor-pointer{% else %}cursor-pointer icon-black{% endif %}">
+            </li>
+       {% endfor %}
+    </ol>
+    <div class="carousel-inner">
+        {% for i in range(0, 5) %}
+            <div class="carousel-item {% if i == 0 %}active cursor-pointer{% else %}cursor-pointer{% endif %}"
+                 href="{{ certs[i].link }}" onclick="window.location.href='{{ certs[i].link }}'">
+                <img class="d-block h-full" src="{{ certs[i].image }}" alt="{{ certs[i].name }}">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5 class="text-3xl font-bold tracking-tight text-gray-600 text-opacity-75 mb-5">{{ certs[i].name }}</h5>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <a class="carousel-control-prev" data-slide="prev" href="#Certificates" role="button">
+        <span aria-hidden="true" class="carousel-control-prev-icon"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" data-slide="next" href="#Certificates" role="button">
+        <span aria-hidden="true" class="carousel-control-next-icon"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
 {% include "footer.html" %}
 </body>
 </html>

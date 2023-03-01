@@ -4,7 +4,7 @@
 <body class="dark:bg-gray-800 dark:text-gray-100">
 {% include "navbar.html" %}
 <h1 class="display-2 font-extrabold text-center mt-10" style="margin-top: 32px">{{ gist.title }}</h1>
-<article class="markdown-body-light" style="margin-top: 32px; padding: 80px">
+<article class="markdown-body-light" style="margin-top: 32px; padding: 50px">
     <div class="container">
         <div class="d-flex align-items-center justify-between row">
             <p class="text-lg font-bold text-start ml-3">Created by</p>
@@ -65,7 +65,7 @@
 </article>
 {% if comments %}
 <div class="container">
-    <div class="row" style="margin-top: 32px; padding: 80px">
+    <div class="row" style="margin-top: 32px; padding: 50px">
         <div class="col-sm-12">
             <h2 class="display-4 font-extrabold text-center mt-10" style="margin-top: 32px">Comments</h2>
             {% for comment in comments %}

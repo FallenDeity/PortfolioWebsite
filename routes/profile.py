@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import fastapi
 
-from utils.constants import LINKS
+from utils.constants import BADGES, LINKS
 
 from . import Extension, route
 
@@ -19,5 +19,6 @@ class Profile(Extension):
                 "web": LINKS.WEBSITE,
                 "f_img": f_img,
                 "a_img": a_img,
+                "badges": BADGES.get_all(),
             },
         )

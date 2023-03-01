@@ -39,6 +39,7 @@ class ENVIRONMENT:
     EMAIL_PASSWORD = EnvironmentVariable(name="EMAIL_PASSWORD")
     GOOGLE_API_KEY = EnvironmentVariable(name="GOOGLE_API_KEY")
     SEARCH_ENGINE = EnvironmentVariable(name="SEARCH_ENGINE")
+    SITE_SHOT = EnvironmentVariable(name="SITE_SHOT")
 
     def __new__(cls, *args: t.Any, **kwargs: t.Any) -> "ENVIRONMENT":
         if cls._instance is None:

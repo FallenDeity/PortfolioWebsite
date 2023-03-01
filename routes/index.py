@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+import pathlib
+import re
+
+import aiofiles
 import fastapi
 
 from utils.cache import ExpiringEmailCache
-from utils.constants import DESCRIPTION, LINKS, SKILLS, VIDEOS
+from utils.constants import CERTIFICATES, DESCRIPTION, LINKS, PATHS, SKILLS, VIDEOS
 from utils.mail import send_email
 from utils.models import Email
 
@@ -26,8 +30,28 @@ class Home(Extension):
                 "videos": VIDEOS.get_as_list(),
                 "desc": DESCRIPTION,
                 "skills": SKILLS.get_lucky_4(),
+                "certs": CERTIFICATES.get_random(),
             },
         )
+
+    @route(path="/api/v1/screenshot", response_model=fastapi.responses.JSONResponse, method="POST")
+    async def screenshot(self, url: dict[str, str]) -> fastapi.responses.JSONResponse:
+        link = re.sub(r"(https?://)?(www\.)?", "", url["url"]).strip("/")
+        link = re.sub(r"[^a-zA-Z0-9]", "_", link)
+        headers = {"key": str(self.app.config.SITE_SHOT)}
+        params = {"url": url["url"], "dimension": "1920x1080", "device": "desktop", "cache_limit": "7"}
+        if pathlib.Path(f"{str(PATHS.SCREENSHOTS)}/{link}.jpg").exists():
+            return fastapi.responses.JSONResponse({"status": "success", "url": f"/static/screenshots/{link}.jpg"})
+        async with self.app.client.get("https://api.screenshotmachine.com", params=params | headers) as resp:
+            if resp.status != 200:
+                print(await resp.text())
+                raise fastapi.exceptions.HTTPException(status_code=500, detail="Screenshot failed!")
+            data = await resp.read()
+            pathlib.Path(f"{str(PATHS.SCREENSHOTS)}").mkdir(parents=True, exist_ok=True)
+            path = f"{str(PATHS.SCREENSHOTS)}/{link}.jpg"
+            async with aiofiles.open(path, "wb") as f:
+                await f.write(data)
+        return fastapi.responses.JSONResponse({"status": "success", "url": f"/static/screenshots/{link}.jpg"})
 
     @route("/api/v1/feedback", method="POST", response_model=fastapi.responses.JSONResponse)
     async def feedback(self, data: Email) -> fastapi.responses.JSONResponse:

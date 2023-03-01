@@ -8,7 +8,7 @@
         <div class="col-12">
             <h1 class="display-2 font-extrabold text-center" style="margin-top: 32px">Blog</h1>
             <br>
-            <div class="flex flex-wrap justify-between" style="margin-top: 64px">
+            <div class="flex flex-wrap justify-content-evenly" style="margin-top: 64px">
                 {% for gist in gists %}
                 <div class="absolute z-10 invisible inline-block w-64 text-sm font-light text-gray-700 transition-opacity duration-300 bg-gray-300 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:bg-gray-800"
                      data-popover id="{{ gist.id }}"
@@ -32,7 +32,8 @@
                             id="title_{{ gist.id }}">{{
                             gist.title }}</h5>
                         <p class="card-text mt-3">{{ gist.description or gist.custom_description }}</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
+                    </div>
+                    <div class="d-flex justify-content-between mt-3 align-items-center card-footer">
                             <div>
                                 <button class="btn btn-primary border-info-subtle"
                                         href="{{ gist.html_url }}"
@@ -54,7 +55,6 @@
                                 </svg>
                                 <small class="ms-1">{{ gist.stars }} stars</small>
                             </div>
-                        </div>
                     </div>
                 </div>
                 <script>getImagefromTitle("{{ gist.id }}")</script>

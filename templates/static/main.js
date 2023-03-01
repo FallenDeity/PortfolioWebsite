@@ -16,6 +16,25 @@ function toggleTheme() {
         moon.classList.remove('hidden');
     }
 }
+function AddMetaImage() {
+    var url = window.location.href;
+    var xhr = new XMLHttpRequest();
+    var data = JSON.stringify({ url: url });
+    xhr.open('POST', '/api/v1/screenshot', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(data);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                var meta = document.querySelector('meta[property="og:image"]');
+                if (meta) {
+                    meta.setAttribute('content', response.url);
+                }
+            }
+        }
+    };
+}
 window.addEventListener("load", function () {
     toggleMarkdownTheme();
 });

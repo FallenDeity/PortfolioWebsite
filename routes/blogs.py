@@ -33,7 +33,25 @@ class Profile(Extension):
         return await self.app.async_run(self.app.github.get_gist, gist_id)
 
     async def render_markdown(self, content: str) -> str:
-        return await self.app.async_run(self.app.github.render_markdown, content)
+        content = content.replace("user-content-", "")
+        result = await self.app.async_run(self.app.github.render_markdown, content)
+        if "[ ]" in result or "[x]" in result:
+            soup = BeautifulSoup(result, "html.parser")
+            for li in soup.find_all("li"):
+                if "[ ]" in li.text or "[x]" in li.text:
+                    print("Found task list item")
+                    ul = li.find_parent("ul") or li.find_parent("ol")
+                    ul["class"] = "contains-task-list"
+                    li["class"] = "task-list-item enabled"
+                    checkbox = soup.new_tag("input")
+                    checkbox["type"] = "checkbox"
+                    checkbox["class"] = "task-list-item-checkbox"
+                    checkbox["disabled"] = ""
+                    if "[x]" in li.text:
+                        checkbox["checked"] = ""
+                    li.insert(0, checkbox)
+            result = str(soup).replace("[ ]", "").replace("[x]", "")
+        return result
 
     async def get_comments(self, gist: Gist) -> list[GistComment]:
         return await self.app.async_run(gist.get_comments)
@@ -48,7 +66,7 @@ class Profile(Extension):
         gist.stars = await self.get_stars(gist.html_url)
         gist.custom_description = re.sub(r"#+\s", "", gist.files[title].content[0:200])
         gist.custom_description = re.sub(r"[^a-zA-Z0-9.]", " ", gist.custom_description) + "..."
-        gist.rendered = await self.render_markdown(gist.files[title].content.replace("user-content-", ""))
+        gist.rendered = await self.render_markdown(gist.files[title].content)
         return gist
 
     @route("/api/v1/image", method="POST", response_model=fastapi.responses.JSONResponse)

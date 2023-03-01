@@ -1,0 +1,14 @@
+#Certificates .carousel-indicators li {
+    background-color: #9a9797;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+}
+
+
+#Certificates .carousel-indicators li.active {
+    background-color: #616162;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
