@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-import pathlib
+import base64
 import re
+import typing
 
-import aiofiles
 import fastapi
 
 from utils.cache import ExpiringEmailCache
-from utils.constants import CERTIFICATES, DESCRIPTION, LINKS, PATHS, SKILLS, VIDEOS
+from utils.constants import CERTIFICATES, DESCRIPTION, LINKS, SKILLS, VIDEOS
 from utils.mail import send_email
 from utils.models import Email
 
@@ -35,23 +35,36 @@ class Home(Extension):
         )
 
     @route(path="/api/v1/screenshot", response_model=fastapi.responses.JSONResponse, method="POST")
-    async def screenshot(self, url: dict[str, str]) -> fastapi.responses.JSONResponse:
-        link = re.sub(r"(https?://)?(www\.)?", "", url["url"]).strip("/")
+    async def screenshot(self, url: typing.Dict[str, str]) -> fastapi.responses.JSONResponse:
+        link = re.sub(r"(https?://)?(www\.)?", "", url.get("url", "https://website-1-j7943388.deta.app/")).strip("/")
         link = re.sub(r"[^a-zA-Z0-9]", "_", link)
-        headers = {"key": str(self.app.config.SITE_SHOT)}
-        params = {"url": url["url"], "dimension": "1920x1080", "device": "desktop", "cache_limit": "7"}
-        if pathlib.Path(f"{str(PATHS.SCREENSHOTS)}/{link}.jpg").exists():
-            return fastapi.responses.JSONResponse({"status": "success", "url": f"/static/screenshots/{link}.jpg"})
+        key = base64.b64encode(f"{str(self.app.config.IMAGE_KIT)}:".encode()).decode("utf-8")
+        headers, headers_img = {"key": str(self.app.config.SITE_SHOT)}, {"Authorization": f"Basic {key}"}
+        search = {"name": f"{link}.jpg"}
+        async with self.app.client.get("https://api.imagekit.io/v1/files", params=search, headers=headers_img) as resp:
+            data = await resp.json()
+            if not data or resp.status != 200:
+                self.app.logger.error(f"Screenshot failed with {await resp.read()}")
+                pass
+            else:
+                self.app.logger.info(f"Found {data[0]} in imagekit.io")
+                return fastapi.responses.JSONResponse({"status": "success", "url": f"{data[0]['url']}"})
+        params = {"url": url["url"], "dimension": "1400x900", "device": "desktop"}
         async with self.app.client.get("https://api.screenshotmachine.com", params=params | headers) as resp:
             if resp.status != 200:
-                print(await resp.text())
+                self.app.logger.error(f"Screenshot failed with {await resp.read()}")
                 raise fastapi.exceptions.HTTPException(status_code=500, detail="Screenshot failed!")
             data = await resp.read()
-            pathlib.Path(f"{str(PATHS.SCREENSHOTS)}").mkdir(parents=True, exist_ok=True)
-            path = f"{str(PATHS.SCREENSHOTS)}/{link}.jpg"
-            async with aiofiles.open(path, "wb") as f:
-                await f.write(data)
-        return fastapi.responses.JSONResponse({"status": "success", "url": f"/static/screenshots/{link}.jpg"})
+            r_data = {"file": data, "fileName": f"{link}.jpg", "useUniqueFileName": "false"}
+            async with self.app.client.post(
+                "https://upload.imagekit.io/api/v1/files/upload", headers=headers_img, data=r_data
+            ) as info:
+                if info.status != 200:
+                    self.app.logger.error(f"Screenshot failed with {await info.read()}")
+                    raise fastapi.exceptions.HTTPException(status_code=500, detail="Screenshot failed!")
+                file = await info.json()
+                self.app.logger.info(f"Uploaded {file} to imagekit.io")
+        return fastapi.responses.JSONResponse({"status": "success", "url": f"{file['url']}"})
 
     @route("/api/v1/feedback", method="POST", response_model=fastapi.responses.JSONResponse)
     async def feedback(self, data: Email) -> fastapi.responses.JSONResponse:

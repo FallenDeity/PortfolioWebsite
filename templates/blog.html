@@ -3,7 +3,7 @@
 {% include "headers.html" %}
 <body class="dark:bg-gray-800 dark:text-gray-100 h-full">
 {% include "navbar.html" %}
-<div class="container" style="padding: 80px">
+<div class="container" style="padding: 50px">
     <div class="row">
         <div class="col-12">
             <h1 class="display-2 font-extrabold text-center" style="margin-top: 32px">Blog</h1>
@@ -21,7 +21,7 @@
                     </div>
                     <div data-popper-arrow></div>
                 </div>
-                <div class="card bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 mb-3 shadow-md dark:shadow-gray-300 shadow-gray-700 dark:hover:shadow-gray-400 hover:shadow-gray-500 hover:scale-105 transform transition duration-500 ease-in-out hover:shadow-xl"
+                <div class="card m-5 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 mb-3 shadow-md dark:shadow-gray-300 shadow-gray-700 dark:hover:shadow-gray-400 hover:shadow-gray-500 hover:scale-105 transform transition duration-500 ease-in-out hover:shadow-xl"
                      style="max-width: 300px">
                     <div class="card-img-top bg-gray-300 dark:bg-gray-600 h-48 w-full object-cover object-center animate-pulse"
                          id="image_{{ gist.id }}"
@@ -35,13 +35,13 @@
                     </div>
                     <div class="d-flex justify-content-between mt-3 align-items-center card-footer">
                             <div>
-                                <button class="btn btn-primary border-info-subtle"
+                                <button class="btn btn-primary"
                                         href="{{ gist.html_url }}"
                                         onclick="window.location.href = this.getAttribute('href')">
                                     <i class="bi bi-github"></i>
                                     View
                                 </button>
-                                <button class="btn btn-primary border-info-subtle"
+                                <button class="btn btn-primary"
                                         href="/posts?gist_id={{ gist.id }}"
                                         onclick="window.location.href = this.getAttribute('href')">
                                     <i class="bi bi-book"></i>

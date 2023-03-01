@@ -27,15 +27,30 @@ function AddMetaImage() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
-                var meta = document.querySelector('meta[property="og:image"]');
-                if (meta) {
+                var tag = document.querySelector('meta[property="og:image"]');
+                var twitterTag = document.querySelector('meta[pproperty="twitter:image:src"]');
+                if (tag) {
+                    tag.setAttribute('content', response.url);
+                    twitterTag.setAttribute('content', response.url);
+                    return;
+                }
+                else {
+                    var meta = document.createElement('meta');
+                    var twitterMeta = document.createElement('meta');
+                    twitterMeta.setAttribute('name', 'twitter:image:src');
+                    twitterMeta.setAttribute('content', response.url);
+                    meta.setAttribute('property', 'og:image');
                     meta.setAttribute('content', response.url);
+                    document.getElementsByTagName('head')[0].appendChild(meta);
+                    document.getElementsByTagName('head')[0].appendChild(twitterMeta);
                 }
             }
         }
     };
 }
 window.addEventListener("load", function () {
+    AddMetaImage();
+    toggleTheme();
     toggleMarkdownTheme();
 });
 function toggleMarkdownTheme() {

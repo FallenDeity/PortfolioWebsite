@@ -275,8 +275,8 @@ class BADGES:
     )
 
     @classmethod
-    def get_all(cls) -> dict[str, list[Badge]]:
-        data: dict[str, list[Badge]] = {}
+    def get_all(cls) -> typing.Dict[str, list[Badge]]:
+        data: typing.Dict[str, list[Badge]] = {}
         for i in cls.__dict__.values():
             if isinstance(i, Badge):
                 data.setdefault(i.category, []).append(i)

@@ -5,6 +5,7 @@ import importlib
 import inspect
 import pathlib
 import random
+import traceback
 import typing as t
 from functools import partial
 
@@ -71,7 +72,8 @@ class Website(fastapi.FastAPI):
 
     async def _exception_handler(self, request: fastapi.Request, _exc: HTTPException) -> fastapi.responses.Response:
         f_img = self.get_image("footers")
-        self.logger.error(f"Error: {_exc.detail}")
+        error_traceback = traceback.format_exc()
+        self.logger.error(error_traceback)
         return self.templates.TemplateResponse("error.html", {"request": request, "name": "Error", "f_img": f_img})
 
     def _mount_files(self) -> None:

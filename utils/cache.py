@@ -13,7 +13,7 @@ KT = typing.TypeVar("KT", bound=str)
 VT = typing.TypeVar("VT", bound=tuple[typing.Any, float])
 
 
-class ExpiringCache(dict[KT, VT]):
+class ExpiringCache(typing.Dict[KT, VT]):
     def __init__(self, seconds: float) -> None:
         self.__ttl: float = seconds
         super().__init__()

@@ -16,7 +16,7 @@ from . import Extension, route
 # pyright: reportGeneralTypeIssues=false
 
 
-class Profile(Extension):
+class Blogs(Extension):
     async def get_stars(self, gist_url: str) -> int:
         async with self.app.client.get(gist_url) as resp:
             soup = BeautifulSoup(await resp.text(), "html.parser")
@@ -39,7 +39,6 @@ class Profile(Extension):
             soup = BeautifulSoup(result, "html.parser")
             for li in soup.find_all("li"):
                 if "[ ]" in li.text or "[x]" in li.text:
-                    print("Found task list item")
                     ul = li.find_parent("ul") or li.find_parent("ol")
                     ul["class"] = "contains-task-list"
                     li["class"] = "task-list-item enabled"
@@ -70,7 +69,7 @@ class Profile(Extension):
         return gist
 
     @route("/api/v1/image", method="POST", response_model=fastapi.responses.JSONResponse)
-    async def feedback(self, data: dict[str, str]) -> fastapi.responses.JSONResponse:
+    async def feedback(self, data: typing.Dict[str, str]) -> fastapi.responses.JSONResponse:
         query = data.get("query", "github")
         google, engine = str(self.app.config.GOOGLE_API_KEY), str(self.app.config.SEARCH_ENGINE)
         async with self.app.client.get(

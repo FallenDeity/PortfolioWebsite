@@ -27,9 +27,21 @@ function AddMetaImage() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                 let response = JSON.parse(xhr.responseText);
-                let meta = document.querySelector('meta[property="og:image"]');
-                if (meta) {
+                let tag = document.querySelector('meta[property="og:image"]');
+                let twitterTag = document.querySelector('meta[pproperty="twitter:image:src"]');
+                if (tag) {
+                    tag.setAttribute('content', response.url);
+                    twitterTag.setAttribute('content', response.url);
+                    return;
+                } else {
+                    let meta = document.createElement('meta');
+                    let twitterMeta = document.createElement('meta');
+                    twitterMeta.setAttribute('name', 'twitter:image:src');
+                    twitterMeta.setAttribute('content', response.url);
+                    meta.setAttribute('property', 'og:image');
                     meta.setAttribute('content', response.url);
+                    document.getElementsByTagName('head')[0].appendChild(meta);
+                    document.getElementsByTagName('head')[0].appendChild(twitterMeta);
                 }
             }
         }
@@ -38,6 +50,8 @@ function AddMetaImage() {
 
 
 window.addEventListener("load", () => {
+    AddMetaImage();
+    toggleTheme();
     toggleMarkdownTheme();
 });
 
