@@ -18,6 +18,7 @@ from github import Github
 from starlette.exceptions import HTTPException
 
 from routes import Extension
+from utils.cache import async_cache
 from utils.constants import DESCRIPTION, PATHS
 
 from .environment import config
@@ -62,6 +63,7 @@ class Website(fastapi.FastAPI):
         self.exception_handler(HTTPException)(self._exception_handler)
 
     @staticmethod
+    @async_cache()
     async def async_run(func: t.Callable[..., t.Any], *args: t.Any, **kwargs: t.Any) -> t.Any:
         return await asyncio.get_running_loop().run_in_executor(None, partial(func, *args, **kwargs))
 

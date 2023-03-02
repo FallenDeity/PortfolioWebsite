@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 {% include "headers.html" %}
-<body class="dark:bg-gray-800 dark:text-gray-100">
+<body class="dark:bg-gray-800 dark:text-gray-100 overflow-x-hidden">
 {% include "navbar.html" %}
 <div class="carousel slide" data-ride="carousel" id="carouselExampleIndicators">
     <ol class="carousel-indicators">
@@ -45,7 +45,7 @@
                 <img alt="avatar" class="rounded-full ring-2 ring-gray-300 dark:ring-gray-500 mt-3" src="{{ a_img }}">
             </div>
             <div class="col-sm-8">
-                <h1 class="display-3 font-bold text-center font-extrabold">Introduction</h1>
+                <h1 class="md:text-6xl text-4xl mt-3 text-center font-extrabold">Introduction</h1>
                 <p class="lead mt-5 text-center font-light">{{ desc }}
                 </p>
                 <div class="row flex justify-center mt-5 flex-wrap items-center w-auto justify-content-evenly">
@@ -77,7 +77,7 @@
         </div>
     </div>
 <h1 class="text-center display-3 font-extrabold tracking-tight text-gray-900 dark:text-gray-200" style="margin-top: 128px">Certificates</h1>
-<div  class="carousel slide" data-ride="carousel" id="Certificates" style="margin-top: 128px;">
+<div  class="carousel slide" data-ride="carousel" id="Certificates" style="margin-top: 64px;">
     <ol class="carousel-indicators">
        {% for i in range(0, 5) %}
             <li data-target="#Certificates" data-slide-to="{{ i }}"

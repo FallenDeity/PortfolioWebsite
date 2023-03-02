@@ -49,8 +49,6 @@ function AddMetaImage() {
     };
 }
 window.addEventListener("load", function () {
-    AddMetaImage();
-    toggleTheme();
     toggleMarkdownTheme();
 });
 function toggleMarkdownTheme() {

@@ -27,7 +27,8 @@ class Blogs(Extension):
         return await self.app.async_run(self.app.github.get_user, login)
 
     async def get_user_gists(self) -> list[Gist]:
-        return await self.app.async_run(self.app.github.get_user().get_gists)
+        user = await self.get_user()
+        return await self.app.async_run(user.get_gists)
 
     async def get_gist(self, gist_id: str) -> Gist:
         return await self.app.async_run(self.app.github.get_gist, gist_id)

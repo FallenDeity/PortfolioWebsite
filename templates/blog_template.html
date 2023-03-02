@@ -1,98 +1,105 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
 {% include "headers.html" %}
-<body class="dark:bg-gray-800 dark:text-gray-100">
+<body class="dark:bg-gray-800 dark:text-gray-100 overflow-x-hidden">
 {% include "navbar.html" %}
-<h1 class="display-2 font-extrabold text-center mt-10" style="margin-top: 32px">{{ gist.title }}</h1>
-<article class="markdown-body-light" style="margin-top: 32px; padding: 50px">
+<div class="container" style="padding: 30px">
+    <h1 class="md:text-6xl text-4xl font-extrabold text-center mt-10" style="margin-top: 32px">{{ gist.title }}</h1>
+    <article class="markdown-body-light" style="margin-top: 32px;">
+        <div class="container">
+            <div class="d-flex align-items-center justify-between row">
+                <p class="text-lg font-bold text-start ml-3">Created by</p>
+                <div class="d-flex mb-5 -space-x-8 col-sm-6">
+                    {% for user in users[::-1] %}
+                    <img alt="" class="w-24 h-24 border-primary rounded-full cursor-pointer border border-4"
+                         data-tooltip-target="{{ user.id }}"
+                         href="{{ user.html_url }}"
+                         onclick="window.location.href = this.getAttribute('href')" src="{{ user.avatar_url }}">
+                    <div class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+                         id="{{ user.id }}"
+                         role="tooltip">
+                        {{ user.login }}
+                        <div class="tooltip-arrow" data-popper-arrow></div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="d-flex col-sm-4">
+                    <div class="d-flex flex-column -mt-5">
+                        <div class="d-flex">
+                            <p class="text-sm font-medium text-gray-500">Last updated</p>
+                            <p class="ml-2 text-sm font-medium text-gray-500">{{ gist.updated_at }}</p>
+                        </div>
+                        <div class="d-flex">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-code-branch text-2xl mr-2 text-purple-600"
+                                   data-tooltip-target="forks"></i>
+                                <div class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+                                     id="forks"
+                                     role="tooltip">
+                                    Forks
+                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                </div>
+                                <p class="text-lg font-bold">{{ len(gist.forks) }}</p>
+                            </div>
+                            <div class="d-flex align-items-center ml-6">
+                                <i class="fa-comment fa-solid text-2xl mr-2 text-green-600"
+                                   data-tooltip-target="comments"></i>
+                                <div class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+                                     id="comments"
+                                     role="tooltip">
+                                    Comments
+                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                </div>
+                                <p class="text-lg font-bold">{{ gist.comments }}</p>
+                            </div>
+                            <div class="d-flex align-items-center ml-6">
+                                <i class="fa-solid fa-star text-2xl mr-2 text-warning" data-tooltip-target="stars"></i>
+                                <div class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+                                     id="stars"
+                                     role="tooltip">
+                                    Stars
+                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                </div>
+                                <p class="text-lg font-bold">{{ gist.stars }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ content | safe }}
+    </article>
+    {% if comments %}
     <div class="container">
-        <div class="d-flex align-items-center justify-between row">
-            <p class="text-lg font-bold text-start ml-3">Created by</p>
-            <div class="d-flex mb-5 -space-x-8 col-sm-6">
-                {% for user in users[::-1] %}
-                <img alt="" class="w-24 h-24 border-primary rounded-full cursor-pointer border border-4" data-tooltip-target="{{ user.id }}"
-                     href="{{ user.html_url }}"
-                     onclick="window.location.href = this.getAttribute('href')" src="{{ user.avatar_url }}">
-                <div class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700" id="{{ user.id }}"
-                     role="tooltip">
-                    {{ user.login }}
-                    <div class="tooltip-arrow" data-popper-arrow></div>
+        <div class="row" style="margin-top: 32px;">
+            <div class="col-sm-12">
+                <h2 class="display-4 font-extrabold text-center mt-10" style="margin-top: 32px">Comments</h2>
+                {% for comment in comments %}
+                <div class="card mt-5 dark:bg-gray-700 dark:text-gray-100 text-gray-800">
+                    <div class="card-header d-flex align-items-center p-3 bg-gray-100 dark:bg-gray-900">
+                        <img alt="" class="w-24 h-24 border-primary rounded-full cursor-pointer border border-3"
+                             href="{{ comment.user.html_url }}"
+                             onclick="window.location.href = this.getAttribute('href')"
+                             src="{{ comment.user.avatar_url }}">
+                        <div class="d-flex flex-column ml-5">
+                            <p class="text-lg font-bold">{{ comment.user.login }}</p>
+                            <p class="text-sm font-medium text-gray-500">{{ comment.created_at }}</p>
+                        </div>
+                    </div>
+                    <div class="card-body h-auto">
+                        <div class="d-flex flex-column">
+                            <article class="markdown-body-light">
+                                {{ comment.custom_body | safe }}
+                            </article>
+                        </div>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
-            <div class="d-flex col-sm-2">
-                <div class="d-flex flex-column -mt-5">
-                    <div class="d-flex">
-                        <p class="text-sm font-medium text-gray-500">Last updated</p>
-                        <p class="ml-2 text-sm font-medium text-gray-500">{{ gist.updated_at }}</p>
-                    </div>
-                    <div class="d-flex">
-                        <div class="d-flex align-items-center">
-                            <i class="fa-solid fa-code-branch text-2xl mr-2 text-purple-600"
-                               data-tooltip-target="forks"></i>
-                            <div class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700" id="forks"
-                                 role="tooltip">
-                                Forks
-                                <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>
-                            <p class="text-lg font-bold">{{ len(gist.forks) }}</p>
-                        </div>
-                        <div class="d-flex align-items-center ml-6">
-                            <i class="fa-comment fa-solid text-2xl mr-2 text-green-600"
-                               data-tooltip-target="comments"></i>
-                            <div class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700" id="comments"
-                                 role="tooltip">
-                                Comments
-                                <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>
-                            <p class="text-lg font-bold">{{ gist.comments }}</p>
-                        </div>
-                        <div class="d-flex align-items-center ml-6">
-                            <i class="fa-solid fa-star text-2xl mr-2 text-warning" data-tooltip-target="stars"></i>
-                            <div class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700" id="stars"
-                                 role="tooltip">
-                                Stars
-                                <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>
-                            <p class="text-lg font-bold">{{ gist.stars }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
-    {{ content | safe }}
-</article>
-{% if comments %}
-<div class="container">
-    <div class="row" style="margin-top: 32px; padding: 50px">
-        <div class="col-sm-12">
-            <h2 class="display-4 font-extrabold text-center mt-10" style="margin-top: 32px">Comments</h2>
-            {% for comment in comments %}
-            <div class="card mt-5 dark:bg-gray-700 dark:text-gray-100 text-gray-800">
-                <div class="card-header d-flex align-items-center p-3 bg-gray-100 dark:bg-gray-900">
-                    <img alt="" class="w-24 h-24 border-primary rounded-full cursor-pointer border border-3"
-                         href="{{ comment.user.html_url }}"
-                         onclick="window.location.href = this.getAttribute('href')"
-                         src="{{ comment.user.avatar_url }}">
-                    <div class="d-flex flex-column ml-5">
-                        <p class="text-lg font-bold">{{ comment.user.login }}</p>
-                        <p class="text-sm font-medium text-gray-500">{{ comment.created_at }}</p>
-                    </div>
-                </div>
-                <div class="card-body h-auto">
-                    <div class="d-flex flex-column">
-                        <article class="markdown-body-light">
-                            {{ comment.custom_body | safe }}
-                        </article>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
+    {% endif %}
 </div>
-{% endif %}
 {% include "footer.html" %}
 </body>
 </html>

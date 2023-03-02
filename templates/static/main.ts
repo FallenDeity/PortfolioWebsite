@@ -50,8 +50,6 @@ function AddMetaImage() {
 
 
 window.addEventListener("load", () => {
-    AddMetaImage();
-    toggleTheme();
     toggleMarkdownTheme();
 });
 
