@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import asyncio
+import base64
 import importlib
 import inspect
 import pathlib
 import random
+import re
 import traceback
 import typing as t
 from functools import partial
@@ -19,7 +21,7 @@ from starlette.exceptions import HTTPException
 
 from routes import Extension
 from utils.cache import async_cache
-from utils.constants import DESCRIPTION, PATHS
+from utils.constants import DESCRIPTION, LINKS, PATHS
 
 from .environment import config
 from .logger import Logger
@@ -98,6 +100,38 @@ class Website(fastapi.FastAPI):
                 continue
             self._auto_setup(f"{PATHS.ROUTES.name}.{file.stem}")
         self.logger.info("Extensions loaded")
+
+    async def get_meta_image(self, url: str) -> str:
+        link = re.sub(r"(https?://)?(www\.)?", "", url).strip("/")
+        link = re.sub(r"[^a-zA-Z0-9]", "_", link)
+        key = base64.b64encode(f"{str(self.config.IMAGE_KIT)}:".encode()).decode("utf-8")
+        headers, headers_img = {"key": str(self.config.SITE_SHOT)}, {"Authorization": f"Basic {key}"}
+        search = {"name": f"{link}.jpg"}
+        async with self.client.get("https://api.imagekit.io/v1/files", params=search, headers=headers_img) as resp:
+            data = await resp.json()
+            if not data or resp.status != 200:
+                self.logger.error(f"Screenshot failed with {await resp.read()}")
+                pass
+            else:
+                self.logger.info(f"Found {data[0]} in imagekit.io")
+                return data[0]["url"]
+        params = {"url": url, "dimension": "1400x900", "device": "desktop", "cacheLimit": "0"}
+        params = params | {"delay": "1000"} if "blog" in url else params
+        async with self.client.get("https://api.screenshotmachine.com", params=params | headers) as resp:
+            if resp.status != 200:
+                self.logger.error(f"Screenshot failed with {await resp.read()}")
+                return LINKS.DEFAULT
+            data = await resp.read()
+            r_data = {"file": data, "fileName": f"{link}.jpg", "useUniqueFileName": "false"}
+            async with self.client.post(
+                "https://upload.imagekit.io/api/v1/files/upload", headers=headers_img, data=r_data
+            ) as info:
+                if info.status != 200:
+                    self.logger.error(f"Screenshot failed with {await info.read()}")
+                    return LINKS.DEFAULT
+                file = await info.json()
+                self.logger.info(f"Uploaded {file} to imagekit.io")
+        return file["url"]
 
     async def on_startup(self) -> None:
         self.logger.info("Starting up...")

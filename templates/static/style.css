@@ -1,3 +1,9 @@
+html {
+    scroll-behavior: smooth;
+    scroll-padding: 10rem;
+}
+
+
 #Certificates .carousel-indicators li {
     background-color: #9a9797;
     border-radius: 50%;

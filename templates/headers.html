@@ -11,23 +11,23 @@
     <script src="https://kit.fontawesome.com/2ef7928ab1.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="icon" type="image/x-icon" href="/assets/home.ico">
-    <link rel="stylesheet" href="static/style.css?v=1">
     <link rel="stylesheet" href="static/markdown-dark.css?v=1">
     <link rel="stylesheet" href="static/markdown-light.css?v=1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.js" integrity="sha512-J7uKR69aZGGGVlt2wkk/bG6XKOsiRE35PE/vU+aau44g3f5bQqGoW7tKe4LKhVI57etFJOYwy/F/vCYTweELIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.css" integrity="sha512-rGqRjILjohR2l4/xWr7TvP42nLhZLBa0C5dCuvFXG6gIrbzElZe0+W7ItgNgJCch+3iVUk0WFMxCJR7jXn9Ylg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="static/style.css?v=2">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
     <meta name="description" content="Hello, I'm Triyan, a student from India. My interests include programming, automation and anime.">
     <meta name="keywords" content="Triyan, Tech, Programming, Anime, Automation, Portfolio">
     <meta name="author" content="Triyan">
     <meta property="og:title" content="Triyan's Portfolio">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://ik.imagekit.io/uiezmxi8f/website_1_j7943388_deta_app.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1677697625635">
+    <meta property="og:image" content="{{ image }}">
     <meta property="og:image:width" content="1400">
     <meta property="og:image:height" content="900">
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:site" content="@Triyan_">
-    <meta property="twitter:image:src" content="https://ik.imagekit.io/uiezmxi8f/website_1_j7943388_deta_app.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1677697625635">
+    <meta property="twitter:image:src" content="{{ image }}">
     <meta property="twitter:title" content="Triyan's Portfolio">
     <meta property="og:description" content="Hello, I'm Triyan, a student from India. My interests include programming, automation and anime.">
     <meta content="#5413c7" data-react-helmet="true" name="theme-color" />
@@ -38,16 +38,6 @@
         tailwind.config = {
             darkMode: 'class',
         }
-    </script>
-    <script type="text/javascript">
-        let site = window.location.href;
-        site = site.replace(/(https?:\/\/)?(www\.)?/g, "");
-        site = site.replace(/\//g, "");
-        site = site.replace(/[^a-zA-Z0-9]/g, "_");
-        let og_image = document.querySelector("meta[property='og:image']");
-        og_image.setAttribute("content", "https://ik.imagekit.io/uiezmxi8f/" + site + ".jpg");
-        let og_image_src = document.querySelector("meta[property='twitter:image:src']");
-        og_image_src.setAttribute("content", "https://ik.imagekit.io/uiezmxi8f/" + site + ".jpg");
     </script>
     <script>toggleTheme()</script>
 </head>

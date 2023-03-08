@@ -25,7 +25,7 @@ async def clean_cache() -> None:
 def async_cache() -> typing.Callable[[typing.Callable[..., typing.Any]], typing.Callable[..., typing.Any]]:
     def decorator(func: typing.Callable[..., typing.Any]) -> typing.Callable[..., typing.Any]:
         async def wrapper(*args: typing.Any, **kwargs: typing.Any) -> typing.Any:
-            key = (args, frozenset(kwargs.items()))
+            key = (frozenset(args), frozenset(kwargs.items()))
             if key in ASYNC_CACHE:
                 return ASYNC_CACHE[key]
             if not ASYNC_CACHE:

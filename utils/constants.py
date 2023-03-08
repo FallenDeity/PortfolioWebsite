@@ -118,6 +118,7 @@ class LINKS(str, BaseEnum):
     GMAIL = "mailto:triyanmukherjee@gmail.com"
     LINKEDIN = "https://www.linkedin.com/in/triyan-mukherjee-1a46b8247/"
     WEBSITE = "https://website-1-j7943388.deta.app/"
+    DEFAULT = "https://ik.imagekit.io/uiezmxi8f/website_1_j7943388_deta_app.jpg"
 
 
 class BADGES:

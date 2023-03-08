@@ -87,9 +87,12 @@
                 <div class="flex flex-wrap justify-center mt-5">
                     {% for badge in badges['Frameworks'] %}
                     <div class="p-3">
-                        <img alt="{{ category }}" class="object-fit-contain" data-tooltip-placement="right"
+                        <div class="flex-wrap flex-col">
+                        <p class="text-sm text-xl font-semibold mt-2">
+                             <img alt="{{ category }}" class="object-fit-contain" data-tooltip-placement="right"
                              data-tooltip-target="{{ badge.name }}" src="{{ badge.image }}" style="width: 80px; height: 80px;">
-                        <p class="text-center text-sm text-xl font-semibold mt-2">{{ badge.name }}</p>
+                            {{ badge.name }}
+                        </p>
                         <div class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
                              id="{{ badge.name }}"
                              role="tooltip">
@@ -97,6 +100,7 @@
                                 <span>{{ badge.name }}</span>
                             </div>
                             <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
                         </div>
                     </div>
                     {% endfor %}

@@ -20,5 +20,6 @@ class Profile(Extension):
                 "f_img": f_img,
                 "a_img": a_img,
                 "badges": BADGES.get_all(),
+                "image": await self.app.get_meta_image(str(request.url)),
             },
         )

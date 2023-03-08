@@ -10,6 +10,7 @@ from github.Gist import Gist
 from github.GistComment import GistComment
 
 from utils.constants import GITHUB_USERNAME
+from utils.models import GistData
 
 from . import Extension, route
 
@@ -60,13 +61,15 @@ class Blogs(Extension):
         async with self.app.client.get(url) as resp:
             return await resp.text()
 
-    async def bump_gist(self, gist: Gist) -> Gist:
-        title = [i for i in gist.files.keys() if ".md" in i][0]
-        gist.title = re.sub(r"[^a-zA-Z0-9.-]", " ", title).replace(".md", "").title()
-        gist.stars = await self.get_stars(gist.html_url)
-        gist.custom_description = re.sub(r"#+\s", "", gist.files[title].content[0:200])
-        gist.custom_description = re.sub(r"[^a-zA-Z0-9.]", " ", gist.custom_description) + "..."
-        gist.rendered = await self.render_markdown(gist.files[title].content)
+    async def bump_gist(self, gist: Gist, title: str | None = None) -> Gist:
+        title = [i for i in gist.files.keys() if ".md" in i][0] if not title else title
+        n_title = re.sub(r"[^a-zA-Z0-9.-]", " ", title).replace(".md", "").title()
+        stars = await self.get_stars(gist.html_url)
+        custom_description = re.sub(r"#+\s", "", gist.files[title].content[0:200])
+        custom_description = re.sub(r"[^a-zA-Z0-9.]", " ", custom_description) + "..."
+        rendered = await self.render_markdown(gist.files[title].content)
+        data = GistData(title=n_title, stars=stars, description=custom_description, rendered=rendered)
+        gist.gists = getattr(gist, "gists", []) + [data]
         return gist
 
     @route("/api/v1/image", method="POST", response_model=fastapi.responses.JSONResponse)
@@ -89,11 +92,12 @@ class Blogs(Extension):
     async def render(self, request: fastapi.Request, gist_id: str) -> fastapi.responses.Response:
         f_img = self.app.get_image("footers")
         gist = await self.get_gist(gist_id)
+        gist.gists = []
         comments = [i for i in await self.get_comments(gist)]
         for comment in comments:
             comment.custom_body = await self.render_markdown(comment.body)
         users = [gist.owner] + [i.user for i in gist.forks]
-        gist = await self.bump_gist(gist)
+        gist = [await self.bump_gist(gist, i) for i in gist.files.keys() if ".md" in i][-1]
         return self.app.templates.TemplateResponse(
             "blog_template.html",
             {
@@ -104,7 +108,7 @@ class Blogs(Extension):
                 "comments": comments,
                 "users": users,
                 "len": len,
-                "content": gist.rendered,  # type: ignore
+                "image": await self.app.get_meta_image(str(request.url)),
             },
         )
 
@@ -113,6 +117,8 @@ class Blogs(Extension):
         f_img = self.app.get_image("footers")
         user = await self.get_user()
         gists = await self.get_user_gists()
+        for i in gists:
+            i.gists = []
         gists = [await self.bump_gist(i) for i in gists]
         return self.app.templates.TemplateResponse(
             "blog.html",
@@ -122,6 +128,7 @@ class Blogs(Extension):
                 "f_img": f_img,
                 "gists": gists,
                 "user": user,
+                "image": await self.app.get_meta_image(str(request.url)),
             },
         )
 

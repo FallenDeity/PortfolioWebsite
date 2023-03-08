@@ -10,6 +10,7 @@ __all__: tuple[str, ...] = (
     "Model",
     "User",
     "Email",
+    "GistData",
 )
 
 
@@ -33,3 +34,13 @@ class Email(BaseModel):
     email: str
     message: str
     subject: str = "Feedback"
+
+    def __hash__(self) -> int:  # type: ignore
+        return hash(self.email)
+
+
+class GistData(BaseModel):
+    title: str
+    stars: int
+    description: str
+    rendered: str
