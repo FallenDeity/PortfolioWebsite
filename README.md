@@ -1,2 +1,1 @@
-# PersonalWebsite
-Repo for a personal website
+A personal/portfolio website made using fastapi.
